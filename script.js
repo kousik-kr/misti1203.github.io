@@ -6,6 +6,48 @@ years.forEach((yearNode) => {
   yearNode.textContent = String(now);
 });
 
+// Enable smooth scroll behavior
+document.documentElement.style.scrollBehavior = 'smooth';
+
+// Menu Toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const tabNav = document.querySelector('.tab-nav');
+
+if (menuToggle && tabNav) {
+  menuToggle.addEventListener('click', () => {
+    const isOpen = menuToggle.classList.toggle('active');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    tabNav.classList.toggle('dropdown-open');
+  });
+
+  // Close dropdown when a tab link is clicked
+  tabLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      tabNav.classList.remove('dropdown-open');
+    });
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!menuToggle.contains(e.target) && !tabNav.contains(e.target)) {
+      menuToggle.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      tabNav.classList.remove('dropdown-open');
+    }
+  });
+
+  // Close dropdown on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      menuToggle.classList.remove('active');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      tabNav.classList.remove('dropdown-open');
+    }
+  });
+}
+
 tabLinks.forEach((link, index) => {
   link.setAttribute('role', 'link');
 
@@ -48,7 +90,7 @@ const revealObserver = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.2 }
+  { threshold: 0.15 }\n);
 );
 
 revealItems.forEach((item) => revealObserver.observe(item));
@@ -60,14 +102,14 @@ tiltCards.forEach((card) => {
     const rect = card.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    const rx = ((y / rect.height) - 0.5) * -5;
-    const ry = ((x / rect.width) - 0.5) * 5;
+    const rx = ((y / rect.height) - 0.5) * -3;
+    const ry = ((x / rect.width) - 0.5) * 3;
 
-    card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`;
+    card.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(8px) scale(1.01)`;
   });
 
   card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
+    card.style.transform = 'perspective(1200px) rotateX(0) rotateY(0) translateZ(0) scale(1)';
   });
 });
 
